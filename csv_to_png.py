@@ -31,15 +31,20 @@ def convert(input, output, resolution, save):
 	df = df.rename_axis("Date", axis="columns")
 	df.index = pd.DatetimeIndex(data=df.index, dayfirst=True)
 	click.echo("Successfully read csv.")
-
+	df2 = pd.DataFrame(df['Weight'].resample('W').mean())
+	df3 = pd.DataFrame(df['Weight'].resample('M').mean())
+	
 	## Plot figure
 	fig = go.Figure()
 	fig.add_trace(go.Scatter(x=df.index, y=df["Weight"],
 	                    mode='lines+markers',
-	                    name='lines+markers'))
-	# fig.add_trace(go.Scatter(x=df.index, y=df["Weight"],
-	#                     mode='markers',
-	#                     name='markers',))
+	                    name='daily'))
+	fig.add_trace(go.Scatter(x=df2.index, y=df2["Weight"],
+	                    mode='lines+markers',
+	                    name='week',))
+	fig.add_trace(go.Scatter(x=df3.index, y=df3["Weight"],
+	                    mode='lines+markers',
+	                    name='month',))
 
 	fig.show()
 
