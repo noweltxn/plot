@@ -3,12 +3,10 @@
 
 import click
 import logging
-import matplotlib.pyplot as plt
 import numpy as np
 import os
 import pandas as pd
 import plotly.graph_objects as go
-import seaborn as sns
 
 from datetime import datetime
 
@@ -22,7 +20,10 @@ from datetime import datetime
 @click.option('--resolution',
 			default=5,
 			help='Quality of the resulting png. (default=5)')
-def csv_to_png(input, output, resolution):
+@click.option('--save',
+			default=yes,
+			help='Save static output as png. (default=yes)')
+def convert(input, output, resolution):
 	## Read csv from file and clean it
 	df = pd.read_csv(r'measurements.csv')
 	df = df.iloc[:1].transpose()
@@ -43,13 +44,14 @@ def csv_to_png(input, output, resolution):
 	fig.show()
 
 	## Saving figure
-	fig.write_image(output, scale=5)
-	click.echo("Image saved as {}".format(output))
+	if save == yes:
+		fig.write_image(output, scale=5)
+		click.echo("Image saved as {}".format(output))
 
 # Save image to file
 if __name__ == "__main__":
 	try:
-		csv_to_png()
+		convert()
 	except Exception as e:
 		click.echo(e)
 
