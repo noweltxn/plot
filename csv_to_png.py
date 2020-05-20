@@ -15,7 +15,7 @@ from datetime import datetime
 			default='measurements.csv',
 			help='Input filename of the csv. (default=measurements.csv)')
 @click.option('--output',
-			default="fig-{}.png".format(datetime.now().strftime('%d_%m_%Y_%H_%M_%S')),
+			default="images/fig-{}.png".format(datetime.now().strftime('%d_%m_%Y_%H_%M_%S')),
 			help='Output filename.')
 @click.option('--resolution',
 			default=5,
@@ -33,18 +33,20 @@ def convert(input, output, resolution, save):
 	click.echo("Successfully read csv.")
 	df2 = pd.DataFrame(df['Weight'].resample('W').mean())
 	df3 = pd.DataFrame(df['Weight'].resample('M').mean())
-	
+
 	## Plot figure
 	fig = go.Figure()
 	fig.add_trace(go.Scatter(x=df.index, y=df["Weight"],
 	                    mode='lines+markers',
-	                    name='daily'))
+	                    name='daily',
+	                    line_shape='spline'))
 	fig.add_trace(go.Scatter(x=df2.index, y=df2["Weight"],
 	                    mode='lines+markers',
-	                    name='week',))
-	fig.add_trace(go.Scatter(x=df3.index, y=df3["Weight"],
-	                    mode='lines+markers',
-	                    name='month',))
+	                    name='spline',
+	                    line_shape='spline'))
+	# fig.add_trace(go.Scatter(x=df3.index, y=df3["Weight"],
+	#                     mode='lines+markers',
+	#                     name='month',))
 
 	fig.show()
 
