@@ -21,9 +21,9 @@ from datetime import datetime
 			default=5,
 			help='Quality of the resulting png. (default=5)')
 @click.option('--save',
-			default=yes,
+			default="yes",
 			help='Save static output as png. (default=yes)')
-def convert(input, output, resolution):
+def convert(input, output, resolution, save):
 	## Read csv from file and clean it
 	df = pd.read_csv(r'measurements.csv')
 	df = df.iloc[:1].transpose()
@@ -44,7 +44,7 @@ def convert(input, output, resolution):
 	fig.show()
 
 	## Saving figure
-	if save == yes:
+	if save == "yes":
 		fig.write_image(output, scale=5)
 		click.echo("Image saved as {}".format(output))
 
